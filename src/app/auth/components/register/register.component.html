@@ -1,0 +1,56 @@
+<div class="center-form">
+    <h2>Enter details to Register</h2>
+    <form nz-form [formGroup]="registerForm" (ngSubmit)="submitForm()" class="custom-form">
+        <nz-form-item>
+            <nz-form-control nzErrorTip="Please input your name!">
+                <nz-input-group nzPrefixIcon="idcard">
+                    <input type="text" nz-input formControlName="name" placeholder="Enter name">
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-control nzErrorTip="Please input your designation!">
+                <nz-input-group nzPrefixIcon="idcard">
+                    <input type="text" nz-input formControlName="designation" placeholder="Enter designation">
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-control nzErrorTip="Please input your email!">
+                <nz-input-group nzPrefixIcon="mail">
+                    <input type="text" nz-input formControlName="email" placeholder="Enter email">
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-control nzErrorTip="Please input your password!">
+                <nz-input-group nzPrefixIcon="lock">
+                    <input type="password" nz-input formControlName="password" (ngModelChange)="updateConfirmValidator()" placeholder="Enter password">
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-control nzErrorTip="Password doesn't match">
+                <nz-input-group nzPrefixIcon="unlock">
+                    <input type="text" nz-input formControlName="confirmpassword" placeholder="confirm password">
+                    <ng-template #errorTpl let-control>
+                        @if (control.errors?.['required']) {
+                          Please confirm your password!
+                        }
+                        @if (control.errors?.['confirm']) {
+                          Two passwords that you enter is inconsistent!
+                        }
+                      </ng-template>
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+
+        <button nz-button nzType="primary" nzBlock [disabled]="registerForm.invalid" class="w-100">
+            Register
+        </button>
+    </form>
+</div>
