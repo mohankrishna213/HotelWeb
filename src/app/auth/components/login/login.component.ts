@@ -3,6 +3,8 @@ import { FormGroup, FormControl, ValidatorFn, AbstractControl, NonNullableFormBu
 import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { AuthService } from '../../services/auth/auth.service';
+import { error } from 'console';
+import { UserStorageService } from '../../services/storage/user-storage.service';
 
 @Component({
   selector: 'app-login',
@@ -26,6 +28,30 @@ export class LoginComponent {
               password: ['', Validators.required],
   });
 }
+submitForm(){
+  this.authService.login(this.LoginForm.value).subscribe(res=>{
+   console.log(res);
+   if(res.userId!=null){
+    const user = {
+      id: res.userId,
+      role: res.userRole
+    }
 
+    UserStorageService.saveUser(user);
+    UserStorageService.saveToken(res.jwt);
+
+    if(UserStorageService.isAdminLoggedIn()){
+      this.router.navigateByUrl('/admin/dashboard');
+    }else if(UserStorageService.isCustomerLoggedIn()){
+      this.router.navigateByUrl('/customer/rooms');
+    }
+   }
+  },error=>
+    this.message
+    .error(
+      `bad credentials`,
+      { nzDuration: 5000}
+    )
+)}
 
 }
